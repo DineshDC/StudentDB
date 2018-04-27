@@ -33,14 +33,20 @@ SOURCES += \
     framelesswindow/framelesswindow.cpp \
     framelesswindow/windowdragger.cpp \
     darkstyle_src/DarkStyle.cpp \
-    course.cpp
+    course.cpp \
+    iperson.cpp \
+    student.cpp \
+    professor.cpp
 
 HEADERS += \
         mainwindow.h \
     framelesswindow/framelesswindow.h \
     framelesswindow/windowdragger.h \
     darkstyle_src/DarkStyle.h \
-    course.h
+    course.h \
+    iperson.h \
+    student.h \
+    professor.h
 
 FORMS += \
         mainwindow.ui \
