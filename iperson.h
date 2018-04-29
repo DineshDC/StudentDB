@@ -1,34 +1,63 @@
 #ifndef IPERSON_H
 #define IPERSON_H
 
+#include <QApplication>
 #include <iostream>
 #include <string>
-#include <QApplication>
+
+
+
 
 typedef enum _PersonType {
     STUDENT   = 0,
     PROFESSOR = 1
 }PersonType;
 
+
+
 class IPerson
 {
 public:
-    IPerson(char person_type);
-    virtual void addBasicInfo(int id,std::string name,int age) = 0;
-    virtual void addPhoneEmail(std::string email = "",std::string phone= "") = 0;
+    IPerson();
+    virtual void addBasicInfo(int id,QString name,int age) = 0;
+    virtual void addPhoneEmailDept(QString email = "",QString phone= "",QString dept = "") = 0;
 
-private:
-    IPerson* getInstance();
+
+    int getAge() const {return m_age;}
+    void setAge(int age){m_age = age;}
+
+    int getId() const {return m_id;}
+    void setId(int id) {m_id = id;}
+
+    QString getName() const {return m_name;}
+    void setName(const QString &name){m_name = name;}
+
+    QString getEmail() const {return m_email;}
+    void setEmail(const QString &email){m_email = email;}
+
+    QString getPhone() const {return m_phone;}
+    void setPhone(const QString &phone){m_phone = phone;}
+
+    uchar getPerson_type() const{return m_person_type;}
+    void setPerson_type(const uchar &person_type) {m_person_type = person_type;}
+
+
+    QString getDept() const;
+    void setDept(const QString &dept);
 
 protected:
     int m_id;
-    std::string m_name;
+    QString m_name;
     int m_age;
-    std::string m_email = "";
-    std::string m_phone= "";
+    QString m_email = "";
+    QString m_phone= "";
+    QString m_dept = "";
     uchar m_person_type = STUDENT;
 
 
 };
+
+
+
 
 #endif // IPERSON_H

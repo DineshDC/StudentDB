@@ -10,6 +10,12 @@
     <height>656</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -31,7 +37,7 @@
      <number>1</number>
     </property>
     <item row="0" column="0">
-     <widget class="QStackedWidget" name="stackedWidget">
+     <widget class="QStackedWidget" name="stackedWidget_main">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(85, 87, 83);</string>
       </property>
@@ -39,127 +45,148 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="page">
-       <widget class="QFrame" name="frame">
-        <property name="geometry">
-         <rect>
-          <x>80</x>
-          <y>80</y>
-          <width>271</width>
-          <height>281</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">font: 75 12pt &quot;Noto Sans&quot;;</string>
-           </property>
-           <property name="text">
-            <string>Username:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QStackedWidget" name="stackedWidget_login">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(117, 80, 123);</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="page_3">
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="QFrame" name="frame">
+              <property name="maximumSize">
+               <size>
+                <width>271</width>
+                <height>301</height>
+               </size>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="1" column="0">
+                <widget class="QLabel" name="label">
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">font: 75 12pt &quot;Noto Sans&quot;;</string>
+                 </property>
+                 <property name="text">
+                  <string>Username:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0" colspan="2">
+                <widget class="QPushButton" name="pb_cancel">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Cancel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1" colspan="2">
+                <widget class="QLineEdit" name="lineEdit_2"/>
+               </item>
+               <item row="3" column="2">
+                <widget class="QPushButton" name="pb_login">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Login</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1" colspan="2">
+                <widget class="QLineEdit" name="lineEdit"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_2">
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">font: 75 12pt &quot;Noto Sans&quot;;</string>
+                 </property>
+                 <property name="text">
+                  <string>Password:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" colspan="2">
+                <widget class="QFrame" name="LoginPhoto">
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>85</height>
+                  </size>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0" colspan="3">
+                <widget class="QPushButton" name="pb_new_user">
+                 <property name="text">
+                  <string>New User Sign Up</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </widget>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>120</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Cancel</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1" colspan="2">
-          <widget class="QLineEdit" name="lineEdit_2"/>
-         </item>
-         <item row="3" column="2">
-          <widget class="QPushButton" name="pushButton">
-           <property name="minimumSize">
-            <size>
-             <width>120</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Login</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QLineEdit" name="lineEdit"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">font: 75 12pt &quot;Noto Sans&quot;;</string>
-           </property>
-           <property name="text">
-            <string>Password:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" colspan="2">
-          <widget class="QFrame" name="LoginPhoto">
-           <property name="maximumSize">
-            <size>
-             <width>150</width>
-             <height>85</height>
-            </size>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frame_4">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>80</y>
-          <width>271</width>
-          <height>341</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel{
+          <widget class="QWidget" name="page_4">
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="QFrame" name="frame_4">
+              <property name="maximumSize">
+               <size>
+                <width>390</width>
+                <height>450</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
 	font: 75 10pt &quot;Noto Sans&quot;;
    
 	color: rgb(238, 238, 236);
@@ -172,145 +199,278 @@ QLineEdit{
 	color: rgb(46, 52, 54);
 
 }</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Phone :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLineEdit" name="lineEdit_4">
-           <property name="placeholderText">
-            <string>Enter full name here</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLineEdit" name="lineEdit_3">
-           <property name="placeholderText">
-            <string>Enter ID here</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>ID :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Name :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Age :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QLineEdit" name="lineEdit_5">
-           <property name="placeholderText">
-            <string>Enter age here</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>Email :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="label_5">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>35</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">font-weight: bold;
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <property name="leftMargin">
+                <number>5</number>
+               </property>
+               <property name="topMargin">
+                <number>5</number>
+               </property>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>5</number>
+               </property>
+               <property name="spacing">
+                <number>2</number>
+               </property>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>ID :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="9" column="1">
+                <widget class="QLineEdit" name="le_email">
+                 <property name="text">
+                  <string>dd@dd</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter email id here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Title :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="13" column="1">
+                <widget class="QPushButton" name="pb_sign_up">
+                 <property name="text">
+                  <string>Sign Up</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QLineEdit" name="le_department">
+                 <property name="text">
+                  <string>entc</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter department here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Department :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QLineEdit" name="le_id">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter ID here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="14" column="1">
+                <widget class="QPushButton" name="pb_cancel_up">
+                 <property name="text">
+                  <string>Cancel</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="12" column="0">
+                <widget class="QLabel" name="label_24">
+                 <property name="text">
+                  <string>Re-enter Password :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>95</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>95</width>
+                   <height>35</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">font-weight: bold;
 font-size: 20px;</string>
-           </property>
-           <property name="text">
-            <string>Person Information</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
+                 </property>
+                 <property name="text">
+                  <string>Student</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="10" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Phone :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
+                <widget class="QLineEdit" name="le_name">
+                 <property name="text">
+                  <string>dd</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter full name here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Name :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Age :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="8" column="1">
+                <widget class="QLineEdit" name="le_age">
+                 <property name="text">
+                  <string>26</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter age here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="9" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Email :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QComboBox" name="cmb_title">
+                 <item>
+                  <property name="text">
+                   <string>Student</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Professor</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="10" column="1">
+                <widget class="QLineEdit" name="le_phone">
+                 <property name="text">
+                  <string>12345678</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter phone number here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLabel" name="label_22">
+                 <property name="styleSheet">
+                  <string notr="true">font-weight: bold;
+font-size: 20px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Information</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="11" column="1">
+                <widget class="QLineEdit" name="le_pass">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="echoMode">
+                  <enum>QLineEdit::Password</enum>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter password here</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="11" column="0">
+                <widget class="QLabel" name="label_23">
+                 <property name="text">
+                  <string>Password :</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="12" column="1">
+                <widget class="QLineEdit" name="le_cpass">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="echoMode">
+                  <enum>QLineEdit::Password</enum>
+                 </property>
+                 <property name="placeholderText">
+                  <string>confirm password</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="QLineEdit" name="lineEdit_7">
-           <property name="placeholderText">
-            <string>Enter phone number here</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QLineEdit" name="lineEdit_6">
-           <property name="placeholderText">
-            <string>Enter email id here</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Title :</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="comboBox_3">
-           <item>
-            <property name="text">
-             <string>Student</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Professor</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="page_2">
        <widget class="QWidget" name="layoutWidget">
@@ -331,84 +491,63 @@ font-size: 20px;</string>
            <property name="frameShadow">
             <enum>QFrame::Raised</enum>
            </property>
-           <widget class="QComboBox" name="comboBox">
-            <property name="geometry">
-             <rect>
-              <x>940</x>
-              <y>50</y>
-              <width>151</width>
-              <height>41</height>
-             </rect>
-            </property>
-            <item>
-             <property name="text">
-              <string>Username</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string/>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Logout</string>
-             </property>
-            </item>
-           </widget>
-           <widget class="QTabWidget" name="tabWidget_Courses">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>911</width>
-              <height>481</height>
-             </rect>
-            </property>
-            <property name="currentIndex">
-             <number>2</number>
-            </property>
-            <widget class="QWidget" name="tab">
-             <attribute name="title">
-              <string>Course Available</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_2">
-             <attribute name="title">
-              <string>My Courses</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_3">
-             <attribute name="title">
-              <string>Add Course</string>
-             </attribute>
-             <widget class="QFrame" name="frame_5">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>181</width>
-                <height>201</height>
-               </rect>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <widget class="QTabWidget" name="tabWidget_Courses">
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-             </widget>
-             <widget class="QFrame" name="frame_6">
-              <property name="geometry">
-               <rect>
-                <x>210</x>
-                <y>10</y>
-                <width>511</width>
-                <height>431</height>
-               </rect>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QLabel{
+              <widget class="QWidget" name="tab">
+               <attribute name="title">
+                <string>Course Available</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_11">
+                <item row="0" column="0">
+                 <widget class="QTableView" name="tableView_Crs_Avail"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_2">
+               <attribute name="title">
+                <string>My Courses</string>
+               </attribute>
+               <layout class="QGridLayout" name="gridLayout_10">
+                <item row="0" column="0">
+                 <widget class="QTableView" name="tableView_MyCrs"/>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_3">
+               <attribute name="title">
+                <string>Add Course</string>
+               </attribute>
+               <widget class="QFrame" name="frame_5">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>181</width>
+                  <height>201</height>
+                 </rect>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+               </widget>
+               <widget class="QFrame" name="frame_6">
+                <property name="geometry">
+                 <rect>
+                  <x>210</x>
+                  <y>10</y>
+                  <width>511</width>
+                  <height>431</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel{
 	font: 75 10pt &quot;Noto Sans&quot;;
 	color: rgb(238, 238, 236);
 }
@@ -427,311 +566,319 @@ QLineEdit{
 	color: rgb(46, 52, 54);
 
 }</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_5">
-               <item row="3" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_10">
-                 <property name="placeholderText">
-                  <string>Enter age here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_12">
-                 <property name="placeholderText">
-                  <string>Enter phone number here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="8" column="0">
-                <widget class="QLabel" name="label_20">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Course Fee :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="0">
-                <widget class="QLabel" name="label_17">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Total Experience :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_11">
-                 <property name="placeholderText">
-                  <string>Enter email id here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_6">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Course Title :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="0">
-                <widget class="QLabel" name="label_15">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Phone :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="0">
-                <widget class="QLabel" name="label_14">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Email :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="9" column="0">
-                <widget class="QLabel" name="label_19">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Pre-requisite :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="label_11">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Age :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0" colspan="4">
-                <widget class="QLabel" name="label_16">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>35</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">font-weight: bold;
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <item row="3" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_10">
+                   <property name="placeholderText">
+                    <string>Enter age here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_12">
+                   <property name="placeholderText">
+                    <string>Enter phone number here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_20">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Course Fee :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="0">
+                  <widget class="QLabel" name="label_17">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Total Experience :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_11">
+                   <property name="placeholderText">
+                    <string>Enter email id here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Course Title :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_15">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Phone :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_14">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Email :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0">
+                  <widget class="QLabel" name="label_19">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Pre-requisite :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_11">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Age :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0" colspan="4">
+                  <widget class="QLabel" name="label_16">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">font-weight: bold;
 font-size: 20px;</string>
-                 </property>
-                 <property name="text">
-                  <string>Course Information</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_14">
-                 <property name="placeholderText">
-                  <string>Enter course duration here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_8">
-                 <property name="placeholderText">
-                  <string>Enter course name here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="8" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_15">
-                 <property name="placeholderText">
-                  <string>Enter course fee here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_9">
-                 <property name="placeholderText">
-                  <string>Enter author name here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="9" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_16">
-                 <property name="placeholderText">
-                  <string>Enter pre-requisite seperated by semicolon (;)</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="0">
-                <widget class="QLabel" name="label_18">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Course Duration :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_13">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Author :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="1" colspan="3">
-                <widget class="QLineEdit" name="lineEdit_13">
-                 <property name="placeholderText">
-                  <string>Enter total teaching experience here</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="10" column="0">
-                <widget class="QLabel" name="label_21">
-                 <property name="minimumSize">
-                  <size>
-                   <width>125</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Description :</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item row="10" column="1" colspan="3">
-                <widget class="QTextEdit" name="textEdit">
-                 <property name="placeholderText">
-                  <string>Tell about course detailed information</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+                   </property>
+                   <property name="text">
+                    <string>Course Information</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_14">
+                   <property name="placeholderText">
+                    <string>Enter course duration here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_8">
+                   <property name="placeholderText">
+                    <string>Enter course name here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_15">
+                   <property name="placeholderText">
+                    <string>Enter course fee here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_9">
+                   <property name="placeholderText">
+                    <string>Enter author name here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_16">
+                   <property name="placeholderText">
+                    <string>Enter pre-requisite seperated by semicolon (;)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0">
+                  <widget class="QLabel" name="label_18">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Course Duration :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_13">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Author :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="1" colspan="3">
+                  <widget class="QLineEdit" name="lineEdit_13">
+                   <property name="placeholderText">
+                    <string>Enter total teaching experience here</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0">
+                  <widget class="QLabel" name="label_21">
+                   <property name="minimumSize">
+                    <size>
+                     <width>125</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Description :</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="1" colspan="3">
+                  <widget class="QTextEdit" name="textEdit">
+                   <property name="placeholderText">
+                    <string>Tell about course detailed information</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QPushButton" name="pushButton_3">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>220</y>
+                  <width>181</width>
+                  <height>25</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Click to select image...</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="pushButton_4">
+                <property name="geometry">
+                 <rect>
+                  <x>740</x>
+                  <y>10</y>
+                  <width>141</width>
+                  <height>25</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>New Course</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="pushButton_5">
+                <property name="geometry">
+                 <rect>
+                  <x>740</x>
+                  <y>50</y>
+                  <width>141</width>
+                  <height>25</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Save Course</string>
+                </property>
+               </widget>
+              </widget>
              </widget>
-             <widget class="QPushButton" name="pushButton_3">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>220</y>
-                <width>181</width>
-                <height>25</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Click to select image...</string>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="geometry">
-               <rect>
-                <x>740</x>
-                <y>10</y>
-                <width>141</width>
-                <height>25</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>New Course</string>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="pushButton_5">
-              <property name="geometry">
-               <rect>
-                <x>740</x>
-                <y>50</y>
-                <width>141</width>
-                <height>25</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Save Course</string>
-              </property>
-             </widget>
-            </widget>
-           </widget>
+            </item>
+           </layout>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QFrame" name="frame_3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>70</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -776,6 +923,31 @@ font-size: 20px;</string>
              <enum>QFrame::Raised</enum>
             </property>
            </widget>
+           <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+             <rect>
+              <x>950</x>
+              <y>10</y>
+              <width>151</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <item>
+             <property name="text">
+              <string>Username</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Logout</string>
+             </property>
+            </item>
+           </widget>
           </widget>
          </item>
         </layout>
@@ -807,5 +979,22 @@ font-size: 20px;</string>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cmb_title</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>label_5</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>505</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>505</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

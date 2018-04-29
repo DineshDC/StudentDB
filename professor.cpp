@@ -1,6 +1,21 @@
+
 #include "professor.h"
 
-Professor::Professor():IPerson(PROFESSOR)
+Professor::Professor()
 {
+  setPerson_type(PROFESSOR);
+}
 
+void Professor::addBasicInfo(int id, QString name, int age)
+{
+    setId(id);
+    setName(name);
+    setAge(age);
+}
+
+void Professor::addPhoneEmailDept(QString email, QString phone, QString dept)
+{
+    setEmail(email);
+    setPhone(phone);
+    setDept(dept);
 }

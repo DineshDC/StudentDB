@@ -4,14 +4,14 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = StudentDB
 TEMPLATE = app
-
-
+QTPLUGIN += QSQLMYSQL
+CONFIG += c++1z
 DEPENDPATH += . framelesswindow darkstyle_src
 INCLUDEPATH += . framelesswindow darkstyle_src
 
@@ -36,7 +36,9 @@ SOURCES += \
     course.cpp \
     iperson.cpp \
     student.cpp \
-    professor.cpp
+    professor.cpp \
+    db_tables.cpp \
+    datatable.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +48,9 @@ HEADERS += \
     course.h \
     iperson.h \
     student.h \
-    professor.h
+    professor.h \
+    db_tables.h \
+    datatable.h
 
 FORMS += \
         mainwindow.ui \

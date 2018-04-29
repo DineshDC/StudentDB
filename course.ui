@@ -10,8 +10,27 @@
     <height>332</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>317</width>
+    <height>332</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+background-color: rgb(114, 159, 207);
+}
+
+QLabel
+{
+	color: rgb(255, 255, 255);
+}
+QTextEdit {
+background-color: rgb(255, 255, 255);
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0" colspan="3">
@@ -69,7 +88,7 @@ p, li { white-space: pre-wrap; }
  By dinesh</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
