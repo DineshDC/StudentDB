@@ -19,15 +19,15 @@ class IPerson
 {
 public:
     IPerson();
-    virtual void addBasicInfo(int id,QString name,int age) = 0;
+    virtual void addBasicInfo(QString id,QString name,int age) = 0;
     virtual void addPhoneEmailDept(QString email = "",QString phone= "",QString dept = "") = 0;
 
 
     int getAge() const {return m_age;}
     void setAge(int age){m_age = age;}
 
-    int getId() const {return m_id;}
-    void setId(int id) {m_id = id;}
+    QString getId() const {return m_id;}
+    void setId(QString id) {m_id = id;}
 
     QString getName() const {return m_name;}
     void setName(const QString &name){m_name = name;}
@@ -46,7 +46,7 @@ public:
     void setDept(const QString &dept);
 
 protected:
-    int m_id;
+    QString m_id;
     QString m_name;
     int m_age;
     QString m_email = "";

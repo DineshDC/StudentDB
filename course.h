@@ -2,6 +2,7 @@
 #define COURSE_H
 
 #include <QWidget>
+#include <memory>
 
 namespace Ui {
 class Course;
@@ -16,6 +17,7 @@ public:
     Course(int courseId,QString course_name,QString department, QString professorName,QString prerequisite,QWidget *parent = 0);
     ~Course();
 
+    static std::unique_ptr<Course> makeCourse(int courseId,QString course_name,QString department, QString professorName,QString prerequisite );
     int course_id() const;
     void setCourse_id(int course_id);
 

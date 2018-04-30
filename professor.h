@@ -9,7 +9,7 @@ class Professor : public IPerson
 public:
     Professor();
 
-    void addBasicInfo(int id,QString name,int age);
+    void addBasicInfo(QString id, QString name, int age);
     void addPhoneEmailDept(QString email = "", QString phone= "",QString dept = "") ;
 
 private:

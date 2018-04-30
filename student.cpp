@@ -5,7 +5,7 @@ Student::Student()
   setPerson_type(STUDENT);
 }
 
-void Student::addBasicInfo(int id, QString name, int age)
+void Student::addBasicInfo(QString id, QString name, int age)
 {
   setId(id);
   setName(name);

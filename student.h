@@ -11,7 +11,7 @@ class Student : public IPerson
 public:
     Student();
 
-    void addBasicInfo(int id, QString name, int age);
+    void addBasicInfo(QString id, QString name, int age);
     void addPhoneEmailDept(QString email = "", QString phone= "", QString dept= "") ;
 
 private:

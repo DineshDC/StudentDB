@@ -22,6 +22,11 @@ Course::~Course()
     delete ui;
 }
 
+std::unique_ptr<Course> Course::makeCourse(int courseId, QString course_name, QString department, QString professorName, QString prerequisite)
+{
+    return std::make_unique<Course>(courseId,course_name,department,professorName,prerequisite);
+}
+
 int Course::course_id() const
 {
     return m_course_id;

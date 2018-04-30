@@ -6,7 +6,7 @@ Professor::Professor()
   setPerson_type(PROFESSOR);
 }
 
-void Professor::addBasicInfo(int id, QString name, int age)
+void Professor::addBasicInfo(QString id, QString name, int age)
 {
     setId(id);
     setName(name);
