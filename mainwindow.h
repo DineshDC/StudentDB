@@ -16,12 +16,14 @@
 #include <QMap>
 #include <QMessageBox>
 #include <QSqlRelationalTableModel>
+#include <QThread>
 
 #include "datatable.h"
 namespace Ui {
 class MainWindow;
 }
 
+class Task;
 
 class NewPerson{
 public:
@@ -36,6 +38,9 @@ public:
     }
 };
 
+
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -46,6 +51,9 @@ public:
 
 
     enum valid_invalid {
+        MW_EMAIL_INVALID = -10,
+        MW_EMAIL_PRESENT = -9,
+        MW_ID_PRESENT = -8,
         MW_FAILED = -7,
         MW_INVALID_USER_PASS = -6,
         MW_PASS_CPASS_NOT_MATCH = -5,
@@ -63,6 +71,10 @@ public:
 
 
     QMap<int,QString > info = {
+        {-10, "Enter email id"},
+        {-9,"Email id already available"},
+        {-8,"ID already available"},
+        {-7,"Failed"},
         {-6,"Invalid username or password"},
         {-5,"Confirm password does not match"},
         {-4,"Enter confirm password "},
@@ -79,6 +91,10 @@ public:
     int validateContent();
 
     void addCoursesForTest();
+
+    std::unique_ptr<db_tables>& getTable(){return table;}
+    QMap<QString,QString>& getUserMap() {return m_map_users;}
+    QMap<QString,QString>& getCourseMap() {return m_map_courses;}
 private slots:
     void on_pb_new_user_clicked();
 
@@ -90,13 +106,36 @@ private slots:
 
     void showMessage(valid_invalid msg, QString text);
     void on_pb_cancel_up_clicked();
+
+
 private:
     Ui::MainWindow *ui;
 
     std::unique_ptr<db_tables> table;
 
+    QThread *thread;
+    Task *task;
+
     QSqlRelationalTableModel *model;
+
+    QMap<QString,QString> m_map_users;
+    QMap<QString ,QString> m_map_courses;
 
 };
 
+class Task : public QObject
+{
+    Q_OBJECT
+public:
+    Task(MainWindow *ptr);
+    ~Task() {}
+public slots:
+    void fetchUsers();
+    void fetchCourses();
+
+private:
+    MainWindow *m_ptr;
+
+
+};
 #endif // MAINWINDOW_H

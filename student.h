@@ -12,7 +12,7 @@ public:
     Student();
 
     void addBasicInfo(QString id, QString name, int age);
-    void addPhoneEmailDept(QString email = "", QString phone= "", QString dept= "") ;
+    void addPhoneEmailDept(QString email, QString phone= "", QString dept= "") ;
 
 private:
 

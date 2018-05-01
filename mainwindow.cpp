@@ -10,6 +10,14 @@ MainWindow::MainWindow(QWidget *parent) :
     table = std::make_unique<db_tables>();
     table->connect("db_conn_login");
 
+    thread = new QThread();
+    task = new Task(this);
+    connect( thread, SIGNAL(started()), task, SLOT(fetchUsers()) );
+   // connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
+
+
+    task->moveToThread(thread);
+    thread->start();
 }
 
 
@@ -21,7 +29,10 @@ MainWindow::~MainWindow()
 
 int MainWindow::validateContent()
 {
-    if(ui->le_id->text().isEmpty()) return MW_ID_INVALID;
+    auto id = ui->le_id->text();
+    auto email = ui->le_email->text();
+
+    if(id.isEmpty()) return MW_ID_INVALID;
 
     if(ui->le_name->text().isEmpty()) return MW_NAME_INVALID;
 
@@ -33,6 +44,14 @@ int MainWindow::validateContent()
 
     if(ui->le_pass->text() != ui->le_cpass->text()) return MW_PASS_CPASS_NOT_MATCH;
 
+    if(email.isEmpty()) return MW_EMAIL_INVALID;
+
+    if(m_map_users.isEmpty()) return MW_SUCCESS;
+    auto it = m_map_users.find(id);
+
+    if(it.key() == id ) return MW_ID_PRESENT;
+    if(it.value() == email) return MW_EMAIL_PRESENT;
+
 }
 
 
@@ -41,30 +60,33 @@ int MainWindow::validateContent()
 void MainWindow::addCoursesForTest()
 {
 
-   short ret =  0;
-   ret = table->create_tables(db_tables::DB_COURSE);
+    short ret =  0;
+    ret = table->create_tables(db_tables::DB_COURSE);
 
-   table->insertCourse( Course::makeCourse(1,"c++","cs","dd","c"));
-   table->insertCourse(Course::makeCourse(2,"Advance c++","cs","dd","c"));
-   table->insertCourse(Course::makeCourse(3,"Java","cs","dd","c"));
-   table->insertCourse(Course::makeCourse(4,"Advance Java","cs","dd","c,& OOPS"));
+    table->insertCourse( Course::makeCourse("1","c++","cs","dd","c"));
+    table->insertCourse(Course::makeCourse("2","Advance c++","cs","dd","c"));
+    table->insertCourse(Course::makeCourse("3","Java","cs","dd","c"));
+    table->insertCourse(Course::makeCourse("4","Advance Java","cs","dd","c,& OOPS"));
 
-   model = new QSqlRelationalTableModel(ui->tableView_Crs_Avail);
-   model->setTable("courses");
+    model = new QSqlRelationalTableModel(ui->tableView_Crs_Avail,table->getDB());
 
-   model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,"Course Name");
-   model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,"Department");
-   model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,"Professor");
-   model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite");
+    model->setTable("courses");
+
+    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID");
+    model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,"Course Name");
+    model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,"Department");
+    model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,"Professor");
+    model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite");
 
 
-   if(!model->select())
-   {
-       model->lastError();
-       return;
-   }
+    if(!model->select())
+    {
+        model->lastError();
+        return;
+    }
 
-   ui->tableView_Crs_Avail->setModel(model);
+    ui->tableView_Crs_Avail->setModel(model);
+    ui->tableView_Crs_Avail->setColumnHidden(model->fieldIndex("id"), true);
 }
 
 
@@ -77,7 +99,6 @@ void MainWindow::on_pb_new_user_clicked()
 
 short MainWindow::check_login()
 {
-
 
     short ret = table->validateLogin(ui->le_username->text(),
                                      ui->le_password->text());
@@ -99,11 +120,20 @@ void MainWindow::on_pb_login_clicked()
     if( check_login() == MW_FAILED) return;
 
     ui->stackedWidget_main->setCurrentIndex(1);
-    addCoursesForTest();
+    //    addCoursesForTest();
+
 }
 
 void MainWindow::on_pb_sign_up_clicked()
 {
+    short ret = validateContent();
+
+    if(ret < 0)
+    {
+        showMessage(MW_MSG_ERROR,info.find(ret).value());
+        return;
+    }
+
     uchar title        = ui->cmb_title->currentIndex();
     QString id         = ui->le_id->text();
     QString department = ui->le_department->text();
@@ -114,12 +144,14 @@ void MainWindow::on_pb_sign_up_clicked()
     QString pass       = ui->le_pass->text();
     QString cpass      = ui->le_cpass->text();
 
+    m_map_users.insert(id,email);
+
     std::unique_ptr<IPerson> person = NewPerson::getPerson(PersonType(title));
     person->addBasicInfo(id,fname,age.toInt());
     person->addPhoneEmailDept(email,phone,department);
-    short ret =  0;
+
     ret = table->create_tables(db_tables::DB_SIGN_UP);
-    ret = table->insertUser(fname,pass);
+    ret = table->insertUser(email,pass);
 
     ret = table->create_tables(db_tables::DB_PERSON);
     ret = table->insertPerson(person);
@@ -143,6 +175,7 @@ void MainWindow::showMessage(MainWindow::valid_invalid msg,QString text)
         QMessageBox::critical(this,"Error",text,QMessageBox::Ok);
         break;
     default:
+        QMessageBox::critical(this,"Error",text);
         break;
     }
 }
@@ -150,4 +183,40 @@ void MainWindow::showMessage(MainWindow::valid_invalid msg,QString text)
 void MainWindow::on_pb_cancel_up_clicked()
 {
     ui->stackedWidget_login->setCurrentIndex(0);
+}
+
+void Task::fetchUsers()
+{
+    qDebug()<<"Fetch User";
+    QStringList list;
+    m_ptr->getTable()->getAll(db_tables::DB_PERSON,"id , email",list);
+
+    if(list.isEmpty())
+        return;
+    for(QString l : list)
+    {
+        QStringList data = l.split(";");
+        m_ptr->getUserMap().insert(data.at(0),data.at(1));
+    }
+}
+
+void Task::fetchCourses()
+{
+    qDebug()<<"Fetch Courses";
+    QStringList list;
+    m_ptr->getTable()->getAll(db_tables::DB_PERSON,"id , coursename",list);
+
+    if(list.isEmpty())
+        return;
+
+    for(QString l : list)
+    {
+        QStringList data = l.split(";");
+        m_ptr->getCourseMap().insert(data.at(0),data.at(1));
+    }
+}
+
+Task::Task(MainWindow *ptr):m_ptr(ptr)
+{
+
 }

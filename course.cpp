@@ -8,7 +8,7 @@ Course::Course(QWidget *parent) :
     ui->setupUi(this);
 }
 
-Course::Course(int courseId, QString course_name, QString department, QString professorName, QString prerequisite, QWidget *parent)
+Course::Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QWidget *parent)
 {
    m_course_id = courseId;
    m_course_name = course_name;
@@ -22,17 +22,17 @@ Course::~Course()
     delete ui;
 }
 
-std::unique_ptr<Course> Course::makeCourse(int courseId, QString course_name, QString department, QString professorName, QString prerequisite)
+std::unique_ptr<Course> Course::makeCourse(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite)
 {
     return std::make_unique<Course>(courseId,course_name,department,professorName,prerequisite);
 }
 
-int Course::course_id() const
+QString Course::course_id() const
 {
     return m_course_id;
 }
 
-void Course::setCourse_id(int course_id)
+void Course::setCourse_id(QString course_id)
 {
     m_course_id = course_id;
 }

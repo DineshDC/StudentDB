@@ -21,7 +21,7 @@ public:
         DB_CONNECTION_AVAILABLE = -2,
         DB_NOT_OPEN = -1,
         DB_SUCCESS  =  0,
-        DB_SIGN_UP    = 1,
+        DB_SIGN_UP    = 1,//table type from here
         DB_PERSON  = 2,
         DB_COURSE = 3
 
@@ -42,8 +42,11 @@ public:
     void deletePerson(const int Id);
     void insertCourse(const std::unique_ptr<Course> &course);
     void deleteCourse(const int Id);
+    short getAll(valid_error_n_values tabletype,const QString& list_wantIt,QStringList &out_getIt);
+    QString getTableName(valid_error_n_values tabletype);
 
     bool isConnected();
+    QSqlDatabase getDB() {return m_db;}
 private:
     QString m_tempQuery;
 

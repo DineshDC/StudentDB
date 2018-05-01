@@ -20,7 +20,7 @@ class IPerson
 public:
     IPerson();
     virtual void addBasicInfo(QString id,QString name,int age) = 0;
-    virtual void addPhoneEmailDept(QString email = "",QString phone= "",QString dept = "") = 0;
+    virtual void addPhoneEmailDept(QString email,QString phone= "",QString dept = "") = 0;
 
 
     int getAge() const {return m_age;}
