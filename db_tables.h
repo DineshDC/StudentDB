@@ -40,7 +40,7 @@ public:
     short insertUser(const QString &username, const QString &password);
     short insertPerson(const std::unique_ptr<IPerson> & person);
     void deletePerson(const int Id);
-    void insertCourse(const std::unique_ptr<Course> &course);
+    short insertCourse(const std::unique_ptr<Course> &course);
     void deleteCourse(const int Id);
     short getAll(valid_error_n_values tabletype,const QString& list_wantIt,QStringList &out_getIt);
     QString getTableName(valid_error_n_values tabletype);

@@ -51,14 +51,18 @@ public:
 
 
     enum valid_invalid {
-        MW_EMAIL_INVALID = -10,
-        MW_EMAIL_PRESENT = -9,
-        MW_ID_PRESENT = -8,
-        MW_FAILED = -7,
-        MW_INVALID_USER_PASS = -6,
-        MW_PASS_CPASS_NOT_MATCH = -5,
-        MW_CPASS_INVALID = -4,
-        MW_PASS_INVALID = -3,
+
+        MW_COURSE_TITLE_INVALID = -14,
+        MW_PROF_NAME_INVALID = -13,
+        MW_COURSE_PRESENT = -12,
+        MW_EMAIL_INVALID = -11,
+        MW_EMAIL_PRESENT = -10,
+        MW_ID_PRESENT = -9,
+        MW_FAILED = -8,
+        MW_INVALID_USER_PASS = -7,
+        MW_PASS_CPASS_NOT_MATCH = -6,
+        MW_CPASS_INVALID = -5,
+        MW_PASS_INVALID = -4,
         MW_DEPT_INVALID = -3,
         MW_NAME_INVALID = -2,
         MW_ID_INVALID = -1,
@@ -70,17 +74,21 @@ public:
     };
 
 
-    QMap<int,QString > info = {
-        {-10, "Enter email id"},
-        {-9,"Email id already available"},
-        {-8,"ID already available"},
-        {-7,"Failed"},
-        {-6,"Invalid username or password"},
-        {-5,"Confirm password does not match"},
-        {-4,"Enter confirm password "},
-        {-3,"Enter password"},
-        {-2,"Enter Department"},
-        {-1,"Enter id"},
+    QMap<int,QString > m_info = {
+        {MW_COURSE_TITLE_INVALID, "Enter course title"},
+        {MW_PROF_NAME_INVALID, "Enter professor name"},
+        {MW_COURSE_PRESENT, "Course already available"},
+        {MW_EMAIL_INVALID, "Enter email id"},
+        {MW_EMAIL_PRESENT,"Email id already available"},
+        {MW_ID_PRESENT,"ID already available"},
+        {MW_FAILED,"Failed"},
+        {MW_INVALID_USER_PASS,"Invalid username or password"},
+        {MW_PASS_CPASS_NOT_MATCH,"Confirm password does not match"},
+        {MW_CPASS_INVALID,"Enter confirm password "},
+        {MW_PASS_INVALID,"Enter password"},
+        {MW_DEPT_INVALID,"Enter Department"},
+        {MW_NAME_INVALID,"Enter name"},
+        {MW_ID_INVALID,"Enter id"},
     };
 
 
@@ -88,7 +96,8 @@ public:
     std::unique_ptr<IPerson> person;
 
 
-    int validateContent();
+    int validateSignUpContent();
+    int validateCourseContent();
 
     void addCoursesForTest();
 
@@ -107,6 +116,8 @@ private slots:
     void showMessage(valid_invalid msg, QString text);
     void on_pb_cancel_up_clicked();
 
+
+    void on_pb_save_course_clicked();
 
 private:
     Ui::MainWindow *ui;

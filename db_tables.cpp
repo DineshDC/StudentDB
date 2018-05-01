@@ -66,7 +66,8 @@ short db_tables::create_tables(uchar table_type)
     case DB_COURSE:
     {
         if (tables.contains("courses", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(10) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(150))" );
+        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(10) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(150)"
+                       "decritption VARCHAR(140) )" );
         if( !query.exec() ) {  qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "Course table created!"; return DB_SUCCESS; }
         break;
@@ -167,7 +168,7 @@ void db_tables::deletePerson(const int Id)
 
 }
 
-void db_tables::insertCourse(const std::unique_ptr<Course> & course)
+short db_tables::insertCourse(const std::unique_ptr<Course> & course)
 {
     QSqlQuery query(m_db);
     m_tempQuery  = "INSERT INTO courses (id,coursename,department,professor,prerequisite) VALUES (:id,:coursename,:department,:professor, :prerequisite )";
@@ -178,9 +179,15 @@ void db_tables::insertCourse(const std::unique_ptr<Course> & course)
     query.bindValue(":professor",    course->professor_name() );
     query.bindValue(":prerequisite", course->prerequisites() );
     if( !query.exec() )
+    {
         qDebug() << query.lastError();
+        return DB_INVALID_QUERY;
+    }
     else
+    {
         qDebug( )<< course->course_name() <<" inserted into table";
+        return DB_SUCCESS;
+    }
 }
 
 void db_tables::deleteCourse(const int Id)

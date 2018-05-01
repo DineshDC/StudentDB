@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     thread = new QThread();
     task = new Task(this);
     connect( thread, SIGNAL(started()), task, SLOT(fetchUsers()) );
-   // connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
+    // connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
 
 
     task->moveToThread(thread);
@@ -27,7 +27,7 @@ MainWindow::~MainWindow()
 
 }
 
-int MainWindow::validateContent()
+int MainWindow::validateSignUpContent()
 {
     auto id = ui->le_id->text();
     auto email = ui->le_email->text();
@@ -52,6 +52,27 @@ int MainWindow::validateContent()
     if(it.key() == id ) return MW_ID_PRESENT;
     if(it.value() == email) return MW_EMAIL_PRESENT;
 
+}
+
+int MainWindow::validateCourseContent()
+{
+    auto id = ui->le_course_id->text();
+    auto course = ui->le_course_title->text();
+
+
+    if(id.isEmpty()) return MW_ID_INVALID;
+
+    if(ui->le_course_title->text().isEmpty()) return MW_COURSE_TITLE_INVALID;
+
+    if(ui->le_course_dept_name->text().isEmpty()) return MW_DEPT_INVALID;
+
+    if(ui->le_professor_name->text().isEmpty()) return MW_PROF_NAME_INVALID;
+
+    if(m_map_courses.isEmpty()) return MW_SUCCESS;
+    auto it = m_map_courses.find(id);
+
+    if(it.key() == id ) return MW_ID_PRESENT;
+    if(it.value() == course) return MW_COURSE_PRESENT;
 }
 
 
@@ -126,11 +147,11 @@ void MainWindow::on_pb_login_clicked()
 
 void MainWindow::on_pb_sign_up_clicked()
 {
-    short ret = validateContent();
+    short ret = validateSignUpContent();
 
     if(ret < 0)
     {
-        showMessage(MW_MSG_ERROR,info.find(ret).value());
+        showMessage(MW_MSG_ERROR,m_info.find(ret).value());
         return;
     }
 
@@ -218,5 +239,36 @@ void Task::fetchCourses()
 
 Task::Task(MainWindow *ptr):m_ptr(ptr)
 {
+
+}
+
+void MainWindow::on_pb_save_course_clicked()
+{
+    short ret = validateCourseContent();
+
+    if(ret < 0)
+    {
+        showMessage(MW_MSG_ERROR,m_info.find(ret).value());
+        return;
+    }
+    QString describe           = ui->textEdit_desciption->toPlainText();
+    if(describe.count() >140)
+    {
+        showMessage(MW_MSG_WARN,"Desciption can enter upto 140 character");
+    }
+
+    QString course_title        = ui->le_course_title->text();
+    QString course_id         = ui->le_course_id->text();
+    QString department        = ui->le_course_dept_name->text();
+    QString prof_name         = ui->le_professor_name->text();
+    QString prerquisite       = ui->le_prerequires->text();
+
+
+    std::unique_ptr<Course> course = Course::makeCourse(course_id,course_title,department,prof_name,prerquisite);
+
+    ret = table->create_tables(db_tables::DB_COURSE);
+    ret = table->insertCourse(course);
+
+    m_map_courses.insert(course_id,course_title);
 
 }
