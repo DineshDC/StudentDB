@@ -13,11 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
     thread = new QThread();
     task = new Task(this);
     connect( thread, SIGNAL(started()), task, SLOT(fetchUsers()) );
-    // connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
+    connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
 
 
     task->moveToThread(thread);
     thread->start();
+
+    ui->stackedWidget_login->setCurrentIndex(0);
+    ui->stackedWidget_main->setCurrentIndex(0);
 }
 
 
@@ -82,22 +85,26 @@ void MainWindow::addCoursesForTest()
 {
 
     short ret =  0;
+
+#ifdef TEST
     ret = table->create_tables(db_tables::DB_COURSE);
 
     table->insertCourse( Course::makeCourse("1","c++","cs","dd","c"));
     table->insertCourse(Course::makeCourse("2","Advance c++","cs","dd","c"));
     table->insertCourse(Course::makeCourse("3","Java","cs","dd","c"));
     table->insertCourse(Course::makeCourse("4","Advance Java","cs","dd","c,& OOPS"));
+#endif
 
     model = new QSqlRelationalTableModel(ui->tableView_Crs_Avail,table->getDB());
 
     model->setTable("courses");
 
-    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID");
+    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID",  Qt::CheckStateRole | Qt::Unchecked);
     model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,"Course Name");
     model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,"Department");
     model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,"Professor");
     model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite");
+    model->setHeaderData(model->fieldIndex("description"),Qt::Horizontal,"Description");
 
 
     if(!model->select())
@@ -107,7 +114,10 @@ void MainWindow::addCoursesForTest()
     }
 
     ui->tableView_Crs_Avail->setModel(model);
-    ui->tableView_Crs_Avail->setColumnHidden(model->fieldIndex("id"), true);
+    ui->tableView_Crs_Avail->resizeColumnsToContents();
+    ui->tableView_Crs_Avail->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // ui->tableView_Crs_Avail->setColumnHidden(model->fieldIndex("id"), true);
 }
 
 
@@ -120,6 +130,24 @@ void MainWindow::on_pb_new_user_clicked()
 
 short MainWindow::check_login()
 {
+
+    if(ui->le_username->text().isEmpty())
+    {
+        showMessage(MainWindow::MW_MSG_ERROR,"Enter username!");
+        return MW_FAILED;
+    }
+
+    if(ui->le_password->text().isEmpty())
+    {
+        showMessage(MainWindow::MW_MSG_ERROR,"Enter password!");
+        return MW_FAILED;
+    }
+
+    if(m_map_users.isEmpty())
+    {
+        showMessage(MainWindow::MW_MSG_ERROR,"User not available sign up first!");
+        return MW_FAILED;
+    }
 
     short ret = table->validateLogin(ui->le_username->text(),
                                      ui->le_password->text());
@@ -134,6 +162,12 @@ short MainWindow::check_login()
         showMessage(MainWindow::MW_MSG_ERROR,"Invalid username or password");
         return MW_FAILED;
     }
+
+    if( ret == db_tables::DB_TABLE_AVAILABLE)
+    {
+        showMessage(MainWindow::MW_MSG_ERROR,"Username not available sign up first!");
+        return MW_FAILED;
+    }
 }
 
 void MainWindow::on_pb_login_clicked()
@@ -141,7 +175,7 @@ void MainWindow::on_pb_login_clicked()
     if( check_login() == MW_FAILED) return;
 
     ui->stackedWidget_main->setCurrentIndex(1);
-    //    addCoursesForTest();
+    addCoursesForTest();
 
 }
 
@@ -225,7 +259,7 @@ void Task::fetchCourses()
 {
     qDebug()<<"Fetch Courses";
     QStringList list;
-    m_ptr->getTable()->getAll(db_tables::DB_PERSON,"id , coursename",list);
+    m_ptr->getTable()->getAll(db_tables::DB_COURSE,"id , coursename",list);
 
     if(list.isEmpty())
         return;
@@ -252,23 +286,24 @@ void MainWindow::on_pb_save_course_clicked()
         return;
     }
     QString describe           = ui->textEdit_desciption->toPlainText();
+    qDebug()<<describe;
     if(describe.count() >140)
     {
         showMessage(MW_MSG_WARN,"Desciption can enter upto 140 character");
     }
 
-    QString course_title        = ui->le_course_title->text();
+    QString course_title      = ui->le_course_title->text();
     QString course_id         = ui->le_course_id->text();
     QString department        = ui->le_course_dept_name->text();
     QString prof_name         = ui->le_professor_name->text();
     QString prerquisite       = ui->le_prerequires->text();
 
 
-    std::unique_ptr<Course> course = Course::makeCourse(course_id,course_title,department,prof_name,prerquisite);
+    std::unique_ptr<Course> course = Course::makeCourse(course_id,course_title,department,prof_name,prerquisite,describe);
 
     ret = table->create_tables(db_tables::DB_COURSE);
     ret = table->insertCourse(course);
 
     m_map_courses.insert(course_id,course_title);
-
+    addCoursesForTest();
 }

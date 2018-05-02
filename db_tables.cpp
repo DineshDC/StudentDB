@@ -66,8 +66,7 @@ short db_tables::create_tables(uchar table_type)
     case DB_COURSE:
     {
         if (tables.contains("courses", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(10) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(150)"
-                       "decritption VARCHAR(140) )" );
+        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(10) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(80), description VARCHAR(140) )" );
         if( !query.exec() ) {  qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "Course table created!"; return DB_SUCCESS; }
         break;
@@ -81,6 +80,9 @@ short db_tables::create_tables(uchar table_type)
 
 short db_tables::validateLogin(const QString &username, const QString &password)
 {
+    QStringList tables = m_db.tables();
+    qDebug()<<tables;
+    if (!tables.contains("login", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
     QSqlQuery query(m_db);
 
     m_tempQuery = "SELECT username, password FROM login WHERE username = '" + username + "'";
@@ -171,16 +173,28 @@ void db_tables::deletePerson(const int Id)
 short db_tables::insertCourse(const std::unique_ptr<Course> & course)
 {
     QSqlQuery query(m_db);
-    m_tempQuery  = "INSERT INTO courses (id,coursename,department,professor,prerequisite) VALUES (:id,:coursename,:department,:professor, :prerequisite )";
+    m_tempQuery  = "INSERT INTO courses (id,coursename,department,professor,prerequisite, description) VALUES (:id,:coursename,:department,:professor, :prerequisite, :description)";
     query.prepare( m_tempQuery );
-    query.bindValue(":id",course->course_id());
+    query.bindValue(":id",           course->course_id());
     query.bindValue(":coursename",   course->course_name());
     query.bindValue(":department",   course->department() );
     query.bindValue(":professor",    course->professor_name() );
     query.bindValue(":prerequisite", course->prerequisites() );
+    query.bindValue(":description",  course->description().trimmed() );
+
+//    const QMap<QString,QVariant> values = query.boundValues();
+//    int paramCount = values.count();
+//    qDebug()<<paramCount;
+
     if( !query.exec() )
     {
         qDebug() << query.lastError();
+        qDebug()<<course->course_id()<<
+        course->course_name()<<
+        course->department()<<
+        course->professor_name() <<
+        course->prerequisites()<<
+        course->description() ;
         return DB_INVALID_QUERY;
     }
     else
@@ -236,7 +250,7 @@ short db_tables::getAll(valid_error_n_values tabletype,const QString& list_wantI
 
             for( int c=0; c<cols; c++ )
             {
-               temp += query.value(c).toString() + ((c<cols-1)?";":"");
+                temp += query.value(c).toString() + ((c<cols-1)?";":"");
             }
             out_getIt.push_back(temp);
         }

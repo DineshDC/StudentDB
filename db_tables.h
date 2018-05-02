@@ -54,4 +54,37 @@ private:
     QString m_connectionName = "person";
 };
 
+#include <QSqlRelation>
+class db_model:public QSqlRelationalTableModel
+{
+public:
+    db_model(QObject *parent):QSqlRelationalTableModel(parent) {}
+    Qt::ItemFlags flags(const QModelIndex & index) const
+    {
+        if(index.column() == 0)
+             return QSqlQueryModel::flags(index) | Qt::ItemIsUserCheckable;
+        return QSqlQueryModel::flags(index);
+    }
+
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const
+    {
+        if(index.column() == 0 && role == Qt::CheckStateRole)
+        {
+
+        }
+        else
+            return QSqlQueryModel::data(index, role);
+    }
+
+    bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole)
+    {
+        if(index.column() == 0 && role == Qt::CheckStateRole)
+        {
+            //implement your logic to set the check state
+            //....
+        }
+        else
+            QSqlQueryModel::setData(index, value, role);
+    }
+};
 #endif // DB_TABLES_H

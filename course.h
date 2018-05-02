@@ -14,10 +14,10 @@ class Course : public QWidget
 
 public:
     explicit Course(QWidget *parent = 0);
-    Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QWidget *parent = 0);
+    Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QString description, QWidget *parent = 0);
     ~Course();
 
-    static std::unique_ptr<Course> makeCourse(QString courseId,QString course_name,QString department, QString professorName,QString prerequisite );
+    static std::unique_ptr<Course> makeCourse(QString courseId,QString course_name,QString department, QString professorName,QString prerequisite ,QString description);
     QString course_id() const;
     void setCourse_id(QString course_id);
 
@@ -33,6 +33,9 @@ public:
     QString professor_name() const;
     void setProfessor_name(const QString &professor_name);
 
+    QString description() const;
+    void setDescription(const QString &description);
+
 private:
 
     QString m_course_id;
@@ -40,8 +43,9 @@ private:
     QString m_department;
     QString m_professor_name;
     QString m_prerequisites;
+    QString m_description;
 
-    Ui::Course *ui;
+   // Ui::Course *ui;
 };
 
 #endif // COURSE_H

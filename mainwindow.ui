@@ -42,7 +42,7 @@
        <string notr="true">background-color: rgb(85, 87, 83);</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_6">
@@ -118,7 +118,14 @@ QLabel {
                 </widget>
                </item>
                <item row="2" column="1" colspan="2">
-                <widget class="QLineEdit" name="le_password"/>
+                <widget class="QLineEdit" name="le_password">
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                 <property name="echoMode">
+                  <enum>QLineEdit::Password</enum>
+                 </property>
+                </widget>
                </item>
                <item row="3" column="2">
                 <widget class="QPushButton" name="pb_login">
@@ -140,7 +147,11 @@ QLabel {
                 </widget>
                </item>
                <item row="1" column="1" colspan="2">
-                <widget class="QLineEdit" name="le_username"/>
+                <widget class="QLineEdit" name="le_username">
+                 <property name="text">
+                  <string>dd@dd</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="label_2">
@@ -506,7 +517,7 @@ font-size: 20px;</string>
             <item row="0" column="0">
              <widget class="QTabWidget" name="tabWidget_Courses">
               <property name="currentIndex">
-               <number>2</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab">
                <attribute name="title">
@@ -571,6 +582,9 @@ QLineEdit{
                   <layout class="QGridLayout" name="gridLayout_5">
                    <item row="4" column="1" colspan="2">
                     <widget class="QLineEdit" name="le_professor_name">
+                     <property name="text">
+                      <string>dd</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Enter professor name here</string>
                      </property>
@@ -578,6 +592,9 @@ QLineEdit{
                    </item>
                    <item row="5" column="1" colspan="2">
                     <widget class="QLineEdit" name="le_course_dept_name">
+                     <property name="text">
+                      <string>Computer science</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Enter Department  here</string>
                      </property>
@@ -669,6 +686,9 @@ font-size: 20px;</string>
                    </item>
                    <item row="3" column="1" colspan="2">
                     <widget class="QLineEdit" name="le_course_title">
+                     <property name="text">
+                      <string>C++ Basics</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Enter course name here</string>
                      </property>
@@ -676,6 +696,9 @@ font-size: 20px;</string>
                    </item>
                    <item row="6" column="1" colspan="2">
                     <widget class="QLineEdit" name="le_prerequires">
+                     <property name="text">
+                      <string>C</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Enter pre-requisite seperated by semicolon (;)</string>
                      </property>
@@ -683,6 +706,14 @@ font-size: 20px;</string>
                    </item>
                    <item row="7" column="1" colspan="2">
                     <widget class="QTextEdit" name="textEdit_desciption">
+                     <property name="html">
+                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:72; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;training on c++ basics&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Tell about course detailed information (140 char)</string>
                      </property>
@@ -722,6 +753,9 @@ font-size: 20px;</string>
                    </item>
                    <item row="1" column="1" colspan="2">
                     <widget class="QLineEdit" name="le_course_id">
+                     <property name="text">
+                      <string>A123</string>
+                     </property>
                      <property name="placeholderText">
                       <string>Enter course Id here</string>
                      </property>
