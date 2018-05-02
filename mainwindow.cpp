@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     table = std::make_unique<db_tables>();
     table->connect("db_conn_login");
 
@@ -21,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->stackedWidget_login->setCurrentIndex(0);
     ui->stackedWidget_main->setCurrentIndex(0);
+
+
 }
 
 
@@ -93,18 +96,17 @@ void MainWindow::addCoursesForTest()
     table->insertCourse(Course::makeCourse("2","Advance c++","cs","dd","c"));
     table->insertCourse(Course::makeCourse("3","Java","cs","dd","c"));
     table->insertCourse(Course::makeCourse("4","Advance Java","cs","dd","c,& OOPS"));
-#endif
 
-    model = new QSqlRelationalTableModel(ui->tableView_Crs_Avail,table->getDB());
+    model = new QSqlTableModel(ui->tableView_Crs_Avail,table->getDB());
 
     model->setTable("courses");
 
-    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID",  Qt::CheckStateRole | Qt::Unchecked);
-    model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,"Course Name");
-    model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,"Department");
-    model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,"Professor");
-    model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite");
-    model->setHeaderData(model->fieldIndex("description"),Qt::Horizontal,"Description");
+    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID");
+    model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,  "Course Name"  );
+    model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,  "Department"   );
+    model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,   "Professor"    );
+    model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite" );
+    model->setHeaderData(model->fieldIndex("description"),Qt::Horizontal, "Description"  );
 
 
     if(!model->select())
@@ -113,11 +115,22 @@ void MainWindow::addCoursesForTest()
         return;
     }
 
+    ui->tableView_Crs_Avail->setItemDelegateForColumn(0,&cmb);
     ui->tableView_Crs_Avail->setModel(model);
     ui->tableView_Crs_Avail->resizeColumnsToContents();
     ui->tableView_Crs_Avail->setEditTriggers(QAbstractItemView::NoEditTriggers);
+#endif
 
-    // ui->tableView_Crs_Avail->setColumnHidden(model->fieldIndex("id"), true);
+
+    QStringList list;
+    table->getAll(db_tables::DB_COURSE,"*",list);
+
+    if(list.isEmpty())
+        return;
+
+    ui->tableWidget_Crs_Avail->updateTable(list);
+    ui->tableWidget_Crs_Avail->resizeColumnsToContents();
+
 }
 
 
@@ -149,8 +162,9 @@ short MainWindow::check_login()
         return MW_FAILED;
     }
 
+    QString id;
     short ret = table->validateLogin(ui->le_username->text(),
-                                     ui->le_password->text());
+                                     ui->le_password->text(),id);
 
     if( ret == db_tables::DB_INVALID_QUERY)
     {
@@ -163,7 +177,7 @@ short MainWindow::check_login()
         return MW_FAILED;
     }
 
-    if( ret == db_tables::DB_TABLE_AVAILABLE)
+    if( ret == db_tables::DB_NOT_TABLE_AVAILABLE)
     {
         showMessage(MainWindow::MW_MSG_ERROR,"Username not available sign up first!");
         return MW_FAILED;
@@ -175,6 +189,16 @@ void MainWindow::on_pb_login_clicked()
     if( check_login() == MW_FAILED) return;
 
     ui->stackedWidget_main->setCurrentIndex(1);
+
+    if(m_person->getPerson_type() == STUDENT)
+    {
+        ui->tabWidget_Courses->removeTab(2);
+//hide tab for student that dont needed
+    }
+    else if(m_person->getPerson_type() == PROFESSOR)
+    {
+        ui->tabWidget_Courses->removeTab(1);
+    }
     addCoursesForTest();
 
 }
@@ -206,7 +230,7 @@ void MainWindow::on_pb_sign_up_clicked()
     person->addPhoneEmailDept(email,phone,department);
 
     ret = table->create_tables(db_tables::DB_SIGN_UP);
-    ret = table->insertUser(email,pass);
+    ret = table->insertUser(id,email,pass);
 
     ret = table->create_tables(db_tables::DB_PERSON);
     ret = table->insertPerson(person);
@@ -244,13 +268,22 @@ void Task::fetchUsers()
 {
     qDebug()<<"Fetch User";
     QStringList list;
-    m_ptr->getTable()->getAll(db_tables::DB_PERSON,"id , email",list);
+    m_ptr->getTable()->getAll(db_tables::DB_PERSON,"*",list);
 
     if(list.isEmpty())
         return;
     for(QString l : list)
     {
         QStringList data = l.split(";");
+        PersonType pType = PersonType(data.at(data.count() - 1).toInt());
+
+        std::unique_ptr<IPerson> person = NewPerson::getPerson(pType);
+        person->setPerson_type(pType);
+
+        person->addBasicInfo(data.at(0),data.at(1),data.at(2).toInt());
+        person->addPhoneEmailDept(data.at(3),data.at(4));
+        m_ptr->setPerson(person);
+
         m_ptr->getUserMap().insert(data.at(0),data.at(1));
     }
 }
@@ -306,4 +339,14 @@ void MainWindow::on_pb_save_course_clicked()
 
     m_map_courses.insert(course_id,course_title);
     addCoursesForTest();
+}
+
+void MainWindow::on_pb_enrolled_clicked()
+{
+    QStringList list = ui->tableWidget_Crs_Avail->getSelection();
+    short ret = table->create_tables(db_tables::DB_REG_COURSE);
+    for(auto l : list)
+    ret = table->insertRegisterCourse(m_person->getId(),l);
+    //table should show register courses and compare id from course  id and show content
+
 }

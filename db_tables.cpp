@@ -49,7 +49,7 @@ short db_tables::create_tables(uchar table_type)
     case DB_SIGN_UP:
     {
         if (tables.contains("login", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS login (key VARCHAR(60) UNIQUE PRIMARY KEY, username VARCHAR(30), password VARCHAR(30))" );
+        query.prepare( "CREATE TABLE IF NOT EXISTS login (key VARCHAR(60) UNIQUE PRIMARY KEY, username VARCHAR(50), password VARCHAR(30))" );
         if( !query.exec() ) { qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "login table created!"; return DB_SUCCESS; }
         break;
@@ -57,7 +57,7 @@ short db_tables::create_tables(uchar table_type)
     case DB_PERSON:
     {
         if (tables.contains("persons", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS persons (id VARCHAR(10) UNIQUE PRIMARY KEY, fullname VARCHAR(30), age INTEGER, email VARCHAR(50), phone VARCHAR(20), person_type INTEGER)" );
+        query.prepare( "CREATE TABLE IF NOT EXISTS persons (id VARCHAR(30) UNIQUE PRIMARY KEY, fullname VARCHAR(30), age INTEGER, email VARCHAR(50), phone VARCHAR(20), department VARCHAR(80), person_type INTEGER)" );
         if( !query.exec() )  { qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "Person table created!"; return DB_SUCCESS; }
 
@@ -66,11 +66,20 @@ short db_tables::create_tables(uchar table_type)
     case DB_COURSE:
     {
         if (tables.contains("courses", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(10) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(80), description VARCHAR(140) )" );
+        query.prepare( "CREATE TABLE IF NOT EXISTS courses (id VARCHAR(30) UNIQUE PRIMARY KEY, coursename VARCHAR(30), department VARCHAR(80), professor VARCHAR(50), prerequisite VARCHAR(80), description VARCHAR(140) )" );
         if( !query.exec() ) {  qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "Course table created!"; return DB_SUCCESS; }
         break;
     }
+    case DB_REG_COURSE:
+    {
+        if (tables.contains("reg_courses", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
+        query.prepare( "CREATE TABLE IF NOT EXISTS reg_courses ( course_id VARCHAR(30) UNIQUE PRIMARY KEY, student_id VARCHAR(30) ");
+        if( !query.exec() ) {  qDebug() << query.lastError(); return DB_INVALID_QUERY; }
+        else  { qDebug() << "Course table created!"; return DB_SUCCESS; }
+        break;
+    }
+
     default:
         break;
     }
@@ -78,14 +87,14 @@ short db_tables::create_tables(uchar table_type)
 
 }
 
-short db_tables::validateLogin(const QString &username, const QString &password)
+short db_tables::validateLogin(const QString &username, const QString &password, QString &key)
 {
     QStringList tables = m_db.tables();
     qDebug()<<tables;
     if (!tables.contains("login", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
     QSqlQuery query(m_db);
 
-    m_tempQuery = "SELECT username, password FROM login WHERE username = '" + username + "'";
+    m_tempQuery = "SELECT key,username, password FROM login WHERE username = '" + username + "'";
     //    m_tempQuery = "SELECT * FROM login";
     query.prepare(m_tempQuery);
     if( !query.exec() )
@@ -97,8 +106,10 @@ short db_tables::validateLogin(const QString &username, const QString &password)
     {
         /*As we know username will be unique we are using this directly*/
         query.next();
-        QString user = query.value(0).toString();
-        QString pass = query.value(1).toString();
+        key  = query.value(0).toString();
+        QString user = query.value(1).toString();
+        QString pass = query.value(2).toString();
+
 
         if(user.isEmpty() || pass.isEmpty()) return DB_INVALID_USER;
 
@@ -126,10 +137,9 @@ short db_tables::validateLogin(const QString &username, const QString &password)
     }
 }
 
-short db_tables::insertUser(const QString &username, const QString &password)
+short db_tables::insertUser(const QString &key,const QString &username, const QString &password)
 {
     QSqlQuery query(m_db);
-    QString key = username+" "+password;
     m_tempQuery  = "INSERT INTO login (key,username,password) VALUES (:key,:username,:password )";
 
     qDebug()<<m_tempQuery;
@@ -148,8 +158,8 @@ short db_tables::insertUser(const QString &username, const QString &password)
 short db_tables::insertPerson(const std::unique_ptr<IPerson> & person)
 {
     QSqlQuery query(m_db);
-    m_tempQuery  = "INSERT INTO persons (id,fullname,age,email,phone,person_type) VALUES ( :id, :fullname,"
-                   ":age,:email,:phone, :person_type )";
+    m_tempQuery  = "INSERT INTO persons (id,fullname,age,email,phone,department,person_type) VALUES ( :id, :fullname,"
+                   ":age,:email,:phone,:department, :person_type )";
     query.prepare( m_tempQuery );
 
     query.bindValue(":id",person->getId());
@@ -157,6 +167,7 @@ short db_tables::insertPerson(const std::unique_ptr<IPerson> & person)
     query.bindValue(":age",person->getAge());
     query.bindValue(":email" ,person->getEmail() );
     query.bindValue(":phone", person->getPhone());
+    query.bindValue(":department",person->getDept() );
     query.bindValue(":person_type",person->getPerson_type() );
 
     if( !query.exec() )
@@ -182,19 +193,19 @@ short db_tables::insertCourse(const std::unique_ptr<Course> & course)
     query.bindValue(":prerequisite", course->prerequisites() );
     query.bindValue(":description",  course->description().trimmed() );
 
-//    const QMap<QString,QVariant> values = query.boundValues();
-//    int paramCount = values.count();
-//    qDebug()<<paramCount;
+    //    const QMap<QString,QVariant> values = query.boundValues();
+    //    int paramCount = values.count();
+    //    qDebug()<<paramCount;
 
     if( !query.exec() )
     {
         qDebug() << query.lastError();
         qDebug()<<course->course_id()<<
-        course->course_name()<<
-        course->department()<<
-        course->professor_name() <<
-        course->prerequisites()<<
-        course->description() ;
+                  course->course_name()<<
+                  course->department()<<
+                  course->professor_name() <<
+                  course->prerequisites()<<
+                  course->description() ;
         return DB_INVALID_QUERY;
     }
     else
@@ -207,6 +218,26 @@ short db_tables::insertCourse(const std::unique_ptr<Course> & course)
 void db_tables::deleteCourse(const int Id)
 {
 
+}
+
+short db_tables::insertRegisterCourse(const QString &student_id, const QString &course_id)
+{
+    QSqlQuery query(m_db);
+    m_tempQuery  = "INSERT INTO reg_course (course_id, student_id) VALUES (:course_id,:student_id)";
+    query.prepare( m_tempQuery );
+    query.bindValue(":course_id",   course_id  );
+    query.bindValue(":student_id",  student_id );
+
+    if( !query.exec() )
+    {
+        qDebug() << query.lastError();
+        return DB_INVALID_QUERY;
+    }
+    else
+    {
+        qDebug( )<< course_id <<" inserted into table";
+        return DB_SUCCESS;
+    }
 }
 
 QString db_tables::getTableName(valid_error_n_values tabletype)

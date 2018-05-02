@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "course.h"
-
+#include "customtable.h"
 #include "student.h"
 #include "professor.h"
 
@@ -93,7 +93,7 @@ public:
 
 
     QMenu *menu;
-    std::unique_ptr<IPerson> person;
+    std::unique_ptr<IPerson> m_person;
 
 
     int validateSignUpContent();
@@ -102,6 +102,7 @@ public:
     void addCoursesForTest();
 
     std::unique_ptr<db_tables>& getTable(){return table;}
+    void setPerson(std::unique_ptr<IPerson>& per) {m_person = std::move(per);}
     QMap<QString,QString>& getUserMap() {return m_map_users;}
     QMap<QString,QString>& getCourseMap() {return m_map_courses;}
 private slots:
@@ -119,6 +120,8 @@ private slots:
 
     void on_pb_save_course_clicked();
 
+    void on_pb_enrolled_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -127,7 +130,7 @@ private:
     QThread *thread;
     Task *task;
 
-    QSqlRelationalTableModel *model;
+    QSqlTableModel *model;
 
     QMap<QString,QString> m_map_users;
     QMap<QString ,QString> m_map_courses;
@@ -146,6 +149,7 @@ public slots:
 
 private:
     MainWindow *m_ptr;
+
 
 
 };

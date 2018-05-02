@@ -38,7 +38,8 @@ SOURCES += \
     student.cpp \
     professor.cpp \
     db_tables.cpp \
-    datatable.cpp
+    datatable.cpp \
+    customtable.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     student.h \
     professor.h \
     db_tables.h \
-    datatable.h
+    datatable.h \
+    customtable.h
 
 FORMS += \
         mainwindow.ui \

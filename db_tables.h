@@ -14,6 +14,7 @@ class db_tables
 {
 public:
     enum valid_error_n_values {
+        DB_NOT_TABLE_AVAILABLE = -7,
         DB_TABLE_AVAILABLE = -6,
         DB_INVALID_QUERY = -5,
         DB_INVALID = -4,
@@ -23,7 +24,8 @@ public:
         DB_SUCCESS  =  0,
         DB_SIGN_UP    = 1,//table type from here
         DB_PERSON  = 2,
-        DB_COURSE = 3
+        DB_COURSE = 3,
+        DB_REG_COURSE = 4
 
     };
     db_tables();
@@ -35,13 +37,14 @@ public:
     void disconnect();
 
     short create_tables(uchar table_type);
-    short validateLogin(const QString &username, const QString &password);
+    short validateLogin(const QString &username, const QString &password, QString &key);
 
-    short insertUser(const QString &username, const QString &password);
+    short insertUser(const QString &key, const QString &username, const QString &password);
     short insertPerson(const std::unique_ptr<IPerson> & person);
     void deletePerson(const int Id);
     short insertCourse(const std::unique_ptr<Course> &course);
     void deleteCourse(const int Id);
+    short insertRegisterCourse(const QString &student_id,const QString &course_id);
     short getAll(valid_error_n_values tabletype,const QString& list_wantIt,QStringList &out_getIt);
     QString getTableName(valid_error_n_values tabletype);
 
