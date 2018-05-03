@@ -22,6 +22,7 @@ public:
     virtual void addBasicInfo(QString id,QString name,int age) = 0;
     virtual void addPhoneEmailDept(QString email,QString phone= "",QString dept = "") = 0;
 
+    IPerson &operator =(const IPerson& per);
 
     int getAge() const {return m_age;}
     void setAge(int age){m_age = age;}

@@ -74,7 +74,7 @@ short db_tables::create_tables(uchar table_type)
     case DB_REG_COURSE:
     {
         if (tables.contains("reg_courses", Qt::CaseInsensitive)) return DB_TABLE_AVAILABLE;
-        query.prepare( "CREATE TABLE IF NOT EXISTS reg_courses ( course_id VARCHAR(30) UNIQUE PRIMARY KEY, student_id VARCHAR(30) ");
+        query.prepare( "CREATE TABLE IF NOT EXISTS reg_courses ( course_id VARCHAR(30) UNIQUE PRIMARY KEY, student_id VARCHAR(30) )");
         if( !query.exec() ) {  qDebug() << query.lastError(); return DB_INVALID_QUERY; }
         else  { qDebug() << "Course table created!"; return DB_SUCCESS; }
         break;
@@ -152,7 +152,7 @@ short db_tables::insertUser(const QString &key,const QString &username, const QS
     if( !query.exec() )
     { qDebug() << query.lastError();  return DB_INVALID ; }
     else
-    {  qDebug( )<<username <<" inserted into table";return DB_SUCCESS; }
+    {  qDebug( )<<"User:"<<username <<" inserted into table";return DB_SUCCESS; }
 }
 
 short db_tables::insertPerson(const std::unique_ptr<IPerson> & person)
@@ -173,7 +173,7 @@ short db_tables::insertPerson(const std::unique_ptr<IPerson> & person)
     if( !query.exec() )
     {  qDebug() << query.lastError();return DB_INVALID ;}
     else
-    { qDebug( )<<person->getName() <<" inserted into table"; return DB_INVALID; }
+    { qDebug( )<<"Person: "<<person->getName() <<" inserted into table"; return DB_INVALID; }
 }
 
 void db_tables::deletePerson(const int Id)
@@ -223,7 +223,7 @@ void db_tables::deleteCourse(const int Id)
 short db_tables::insertRegisterCourse(const QString &student_id, const QString &course_id)
 {
     QSqlQuery query(m_db);
-    m_tempQuery  = "INSERT INTO reg_course (course_id, student_id) VALUES (:course_id,:student_id)";
+    m_tempQuery  = "INSERT INTO reg_courses (course_id, student_id) VALUES (:course_id,:student_id)";
     query.prepare( m_tempQuery );
     query.bindValue(":course_id",   course_id  );
     query.bindValue(":student_id",  student_id );
@@ -243,7 +243,7 @@ short db_tables::insertRegisterCourse(const QString &student_id, const QString &
 QString db_tables::getTableName(valid_error_n_values tabletype)
 {
     QStringList strlist;
-    strlist<<"login"<<"persons"<<"courses";
+    strlist<<"login"<<"persons"<<"courses"<<"reg_courses";
     return strlist.at(tabletype-valid_error_n_values(1));
 }
 
@@ -279,10 +279,48 @@ short db_tables::getAll(valid_error_n_values tabletype,const QString& list_wantI
         while( query.next() )
         {
 
+            temp = "";
             for( int c=0; c<cols; c++ )
             {
                 temp += query.value(c).toString() + ((c<cols-1)?";":"");
             }
+            out_getIt.push_back(temp);
+        }
+    }
+}
+
+short db_tables::getRegCourse(valid_error_n_values tabletype, const QString& id,QStringList &out_getIt)
+{
+    QStringList tables = m_db.tables();
+
+    QSqlQuery query(m_db);
+
+    QString tablename = getTableName(tabletype);
+
+    if(tabletype == DB_PERSON || tabletype == DB_COURSE || tabletype == DB_SIGN_UP)
+        if (!tables.contains(tablename, Qt::CaseInsensitive)) return DB_INVALID;
+    m_tempQuery = "SELECT course_id FROM reg_courses WHERE student_id = '" + id + "'";
+
+    query.prepare(m_tempQuery);
+    if( !query.exec() )
+    {
+        qDebug() <<m_tempQuery<<"\n"<< query.lastError();
+        return DB_INVALID_QUERY;
+    }
+    else
+    {
+        QSqlRecord rec = query.record();
+        int cols = rec.count();
+        QString temp = "";
+        while( query.next() )
+        {
+
+            temp = "";
+            for( int c=0; c<cols; c++ )
+            {
+                temp += query.value(c).toString() + ((c<cols-1)?";":"");
+            }
+            qDebug()<<"cnt "<<temp;
             out_getIt.push_back(temp);
         }
     }

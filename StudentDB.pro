@@ -56,8 +56,7 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
-    framelesswindow/framelesswindow.ui \
-    course.ui
+    framelesswindow/framelesswindow.ui
 
 RESOURCES += \
     darkstyle.qrc \

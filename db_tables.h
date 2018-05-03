@@ -48,6 +48,7 @@ public:
     short getAll(valid_error_n_values tabletype,const QString& list_wantIt,QStringList &out_getIt);
     QString getTableName(valid_error_n_values tabletype);
 
+    short getRegCourse(valid_error_n_values tabletype,const QString& id,QStringList &out_getIt);
     bool isConnected();
     QSqlDatabase getDB() {return m_db;}
 private:

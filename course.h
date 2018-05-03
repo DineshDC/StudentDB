@@ -1,20 +1,15 @@
 #ifndef COURSE_H
 #define COURSE_H
 
-#include <QWidget>
 #include <memory>
+#include <QString>
 
-namespace Ui {
-class Course;
-}
-
-class Course : public QWidget
+class Course
 {
-    Q_OBJECT
 
 public:
-    explicit Course(QWidget *parent = 0);
-    Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QString description, QWidget *parent = 0);
+    explicit Course();
+    Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QString description);
     ~Course();
 
     static std::unique_ptr<Course> makeCourse(QString courseId,QString course_name,QString department, QString professorName,QString prerequisite ,QString description);
@@ -35,6 +30,8 @@ public:
 
     QString description() const;
     void setDescription(const QString &description);
+
+    QString toString();
 
 private:
 

@@ -1,14 +1,12 @@
 #include "course.h"
 #include "ui_course.h"
 
-Course::Course(QWidget *parent) :
-    QWidget(parent)/*,
-    ui(new Ui::Course)*/
+Course::Course()
 {
-    //ui->setupUi(this);
+
 }
 
-Course::Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite,QString description ,QWidget *parent)
+Course::Course(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QString description )
 {
    m_course_id      = courseId;
    m_course_name    = course_name;
@@ -21,7 +19,7 @@ Course::Course(QString courseId, QString course_name, QString department, QStrin
 
 Course::~Course()
 {
-   // delete ui;
+
 }
 
 std::unique_ptr<Course> Course::makeCourse(QString courseId, QString course_name, QString department, QString professorName, QString prerequisite, QString description)
@@ -87,4 +85,10 @@ QString Course::description() const
 void Course::setDescription(const QString &description)
 {
     m_description = description;
+}
+
+QString Course::toString()
+{
+    return course_id() + ";" + course_name() + ";" + department() + ";" + professor_name() + ";"+
+            prerequisites() + ";"+description();
 }

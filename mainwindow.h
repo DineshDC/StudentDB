@@ -93,7 +93,7 @@ public:
 
 
     QMenu *menu;
-    std::unique_ptr<IPerson> m_person;
+    std::shared_ptr<IPerson> m_person;
 
 
     int validateSignUpContent();
@@ -104,7 +104,14 @@ public:
     std::unique_ptr<db_tables>& getTable(){return table;}
     void setPerson(std::unique_ptr<IPerson>& per) {m_person = std::move(per);}
     QMap<QString,QString>& getUserMap() {return m_map_users;}
-    QMap<QString,QString>& getCourseMap() {return m_map_courses;}
+    QMap<QString,QString>& getRegCourseMap() {return m_map_courses;}
+
+    QMap<QString ,Course> m_course_list;
+    QMap<QString ,std::shared_ptr<IPerson> > m_person_list;
+
+public slots:
+    void setMyCourseTable(const QStringList& list);
+
 private slots:
     void on_pb_new_user_clicked();
 
@@ -146,6 +153,7 @@ public:
 public slots:
     void fetchUsers();
     void fetchCourses();
+    void fetchRegCourses();
 
 private:
     MainWindow *m_ptr;

@@ -50,4 +50,5 @@ QStringList CustomTable::getSelection()
             lst.push_back(temp_item->text());
         }
     }
+    return lst;
 }

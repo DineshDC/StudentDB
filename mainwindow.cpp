@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
 
 
+
+
     task->moveToThread(thread);
     thread->start();
 
@@ -53,10 +55,11 @@ int MainWindow::validateSignUpContent()
     if(email.isEmpty()) return MW_EMAIL_INVALID;
 
     if(m_map_users.isEmpty()) return MW_SUCCESS;
-    auto it = m_map_users.find(id);
 
-    if(it.key() == id ) return MW_ID_PRESENT;
-    if(it.value() == email) return MW_EMAIL_PRESENT;
+    QMap<QString, QString>::iterator i = m_map_users.find("plenty");
+    if(i == m_map_users.end()) return MW_SUCCESS;
+    if(i.key() == id ) return MW_ID_PRESENT;
+    if(i.value() == email) return MW_EMAIL_PRESENT;
 
 }
 
@@ -75,8 +78,8 @@ int MainWindow::validateCourseContent()
     if(ui->le_professor_name->text().isEmpty()) return MW_PROF_NAME_INVALID;
 
     if(m_map_courses.isEmpty()) return MW_SUCCESS;
-    auto it = m_map_courses.find(id);
-
+    QMap<QString, QString>::iterator it = m_map_courses.find(id);
+    if(it == m_map_courses.end()) return MW_SUCCESS;
     if(it.key() == id ) return MW_ID_PRESENT;
     if(it.value() == course) return MW_COURSE_PRESENT;
 }
@@ -133,6 +136,22 @@ void MainWindow::addCoursesForTest()
 
 }
 
+void MainWindow::setMyCourseTable(const QStringList &list)
+{
+    QStringList course_list;
+    for(QString l : list)
+    {
+        auto it = m_course_list.find(l);
+        Course cs = it.value();
+        course_list.push_back(cs.toString());
+
+    }
+    if(course_list.isEmpty()) return;
+    ui->tableWidget_MyCrs->updateTable(course_list);
+    ui->tableWidget_MyCrs->resizeColumnsToContents();
+
+}
+
 
 
 
@@ -166,6 +185,13 @@ short MainWindow::check_login()
     short ret = table->validateLogin(ui->le_username->text(),
                                      ui->le_password->text(),id);
 
+
+    QMap<QString ,std::shared_ptr<IPerson> >::iterator it =  m_person_list.find(id);
+    if(it != m_person_list.end())
+    {
+        m_person = it.value();
+    }
+
     if( ret == db_tables::DB_INVALID_QUERY)
     {
         showMessage(MainWindow::MW_MSG_ERROR,"Invalid query");
@@ -188,16 +214,22 @@ void MainWindow::on_pb_login_clicked()
 {
     if( check_login() == MW_FAILED) return;
 
+    task->fetchRegCourses();
     ui->stackedWidget_main->setCurrentIndex(1);
 
     if(m_person->getPerson_type() == STUDENT)
     {
-        ui->tabWidget_Courses->removeTab(2);
-//hide tab for student that dont needed
+        ui->tabWidget_Courses->setTabEnabled(2,false);
+        ui->tabWidget_Courses->setTabText(2,"");
+        ui->pb_enrolled->show();
+
     }
     else if(m_person->getPerson_type() == PROFESSOR)
     {
-        ui->tabWidget_Courses->removeTab(1);
+        ui->tabWidget_Courses->setTabEnabled(1,false);
+        ui->tabWidget_Courses->setTabText(1,"");
+        ui->pb_enrolled->hide();
+
     }
     addCoursesForTest();
 
@@ -225,15 +257,22 @@ void MainWindow::on_pb_sign_up_clicked()
 
     m_map_users.insert(id,email);
 
-    std::unique_ptr<IPerson> person = NewPerson::getPerson(PersonType(title));
-    person->addBasicInfo(id,fname,age.toInt());
-    person->addPhoneEmailDept(email,phone,department);
+    {
+        std::unique_ptr<IPerson> person = NewPerson::getPerson(PersonType(title));
+        person->addBasicInfo(id,fname,age.toInt());
+        person->addPhoneEmailDept(email,phone,department);
 
-    ret = table->create_tables(db_tables::DB_SIGN_UP);
-    ret = table->insertUser(id,email,pass);
+        ret = table->create_tables(db_tables::DB_SIGN_UP);
+        ret = table->insertUser(id,email,pass);
 
-    ret = table->create_tables(db_tables::DB_PERSON);
-    ret = table->insertPerson(person);
+        ret = table->create_tables(db_tables::DB_PERSON);
+        ret = table->insertPerson(person);
+        std::shared_ptr<IPerson> p = NewPerson::getPerson(PersonType(title));
+        p->addBasicInfo(id,fname,age.toInt());
+        p->addPhoneEmailDept(email,phone,department);
+        p->setPerson_type(PersonType(title));
+        m_person_list.insert(id,p);
+    }
 
 
 }
@@ -282,7 +321,7 @@ void Task::fetchUsers()
 
         person->addBasicInfo(data.at(0),data.at(1),data.at(2).toInt());
         person->addPhoneEmailDept(data.at(3),data.at(4));
-        m_ptr->setPerson(person);
+        m_ptr->m_person_list.insert(data.at(0),std::move(person));
 
         m_ptr->getUserMap().insert(data.at(0),data.at(1));
     }
@@ -292,7 +331,7 @@ void Task::fetchCourses()
 {
     qDebug()<<"Fetch Courses";
     QStringList list;
-    m_ptr->getTable()->getAll(db_tables::DB_COURSE,"id , coursename",list);
+    m_ptr->getTable()->getAll(db_tables::DB_COURSE,"*",list);
 
     if(list.isEmpty())
         return;
@@ -300,7 +339,26 @@ void Task::fetchCourses()
     for(QString l : list)
     {
         QStringList data = l.split(";");
-        m_ptr->getCourseMap().insert(data.at(0),data.at(1));
+        Course course(data.at(0), data.at(1), data.at(2), data.at(3), data.at(4), data.at(5));
+        m_ptr->m_course_list.insert(data.at(0),course);
+    }
+}
+
+void Task::fetchRegCourses()
+{
+    qDebug()<<"Fetch Req Courses";
+
+    if(m_ptr->m_person != nullptr)
+    {
+        QStringList list;
+        QString id = m_ptr->m_person->getId();
+        m_ptr->getTable()->getRegCourse(db_tables::DB_REG_COURSE,id,list);
+
+        if(list.isEmpty())
+            return;
+
+        m_ptr->setMyCourseTable(list);
+
     }
 }
 
@@ -319,7 +377,7 @@ void MainWindow::on_pb_save_course_clicked()
         return;
     }
     QString describe           = ui->textEdit_desciption->toPlainText();
-    qDebug()<<describe;
+
     if(describe.count() >140)
     {
         showMessage(MW_MSG_WARN,"Desciption can enter upto 140 character");
@@ -346,7 +404,7 @@ void MainWindow::on_pb_enrolled_clicked()
     QStringList list = ui->tableWidget_Crs_Avail->getSelection();
     short ret = table->create_tables(db_tables::DB_REG_COURSE);
     for(auto l : list)
-    ret = table->insertRegisterCourse(m_person->getId(),l);
-    //table should show register courses and compare id from course  id and show content
+        ret = table->insertRegisterCourse(m_person->getId(),l);
 
+    task->fetchRegCourses();
 }
