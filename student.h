@@ -15,6 +15,7 @@ public:
     void addPhoneEmailDept(QString email, QString phone= "", QString dept= "") ;
 
     void setRegCourses(QStringList list) {m_regCourses = list;}
+    QStringList getRegCourses() {return m_regCourses;}
 private:
 
     QStringList m_regCourses;

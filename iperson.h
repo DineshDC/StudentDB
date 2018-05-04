@@ -24,6 +24,10 @@ public:
 
     IPerson &operator =(const IPerson& per);
 
+
+    virtual QStringList getRegCourses() {}
+    virtual void setRegCourses(QStringList list){}
+
     int getAge() const {return m_age;}
     void setAge(int age){m_age = age;}
 

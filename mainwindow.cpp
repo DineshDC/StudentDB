@@ -92,46 +92,19 @@ void MainWindow::addCoursesForTest()
 
     short ret =  0;
 
-#ifdef TEST
-    ret = table->create_tables(db_tables::DB_COURSE);
-
-    table->insertCourse( Course::makeCourse("1","c++","cs","dd","c"));
-    table->insertCourse(Course::makeCourse("2","Advance c++","cs","dd","c"));
-    table->insertCourse(Course::makeCourse("3","Java","cs","dd","c"));
-    table->insertCourse(Course::makeCourse("4","Advance Java","cs","dd","c,& OOPS"));
-
-    model = new QSqlTableModel(ui->tableView_Crs_Avail,table->getDB());
-
-    model->setTable("courses");
-
-    model->setHeaderData(model->fieldIndex("id"),Qt::Horizontal,"ID");
-    model->setHeaderData(model->fieldIndex("coursename"),Qt::Horizontal,  "Course Name"  );
-    model->setHeaderData(model->fieldIndex("department"),Qt::Horizontal,  "Department"   );
-    model->setHeaderData(model->fieldIndex("professor"),Qt::Horizontal,   "Professor"    );
-    model->setHeaderData(model->fieldIndex("prerequisite"),Qt::Horizontal,"Prerequisite" );
-    model->setHeaderData(model->fieldIndex("description"),Qt::Horizontal, "Description"  );
-
-
-    if(!model->select())
-    {
-        model->lastError();
-        return;
-    }
-
-    ui->tableView_Crs_Avail->setItemDelegateForColumn(0,&cmb);
-    ui->tableView_Crs_Avail->setModel(model);
-    ui->tableView_Crs_Avail->resizeColumnsToContents();
-    ui->tableView_Crs_Avail->setEditTriggers(QAbstractItemView::NoEditTriggers);
-#endif
-
-
     QStringList list;
     table->getAll(db_tables::DB_COURSE,"*",list);
 
     if(list.isEmpty())
         return;
 
-    ui->tableWidget_Crs_Avail->updateTable(list);
+    QStringList avail;
+    if(m_person->getPerson_type() == STUDENT)
+    {
+        avail = m_person->getRegCourses();
+    }
+
+    ui->tableWidget_Crs_Avail->updateTable(list,avail);
     ui->tableWidget_Crs_Avail->resizeColumnsToContents();
 
 }
@@ -190,6 +163,7 @@ short MainWindow::check_login()
     if(it != m_person_list.end())
     {
         m_person = it.value();
+        setWindowTitle(m_person->getName());
     }
 
     if( ret == db_tables::DB_INVALID_QUERY)
@@ -358,6 +332,8 @@ void Task::fetchRegCourses()
             return;
 
         m_ptr->setMyCourseTable(list);
+        m_ptr->m_person->setRegCourses(list);
+
 
     }
 }

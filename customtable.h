@@ -9,7 +9,7 @@ class CustomTable : public QTableWidget
 public:
     CustomTable(QWidget *parent = Q_NULLPTR);
 
-    void updateTable(QStringList list);
+    void updateTable(QStringList list, const QStringList& availableList = QStringList()<<"");
     QStringList getSelection();
 };
 
