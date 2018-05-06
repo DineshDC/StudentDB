@@ -4,5 +4,7 @@
         <file>images/icon_window_maximize.png</file>
         <file>images/icon_window_minimize.png</file>
         <file>images/icon_window_restore.png</file>
+        <file>framelesswindow/login.jpeg</file>
+        <file>images/userlogin.png</file>
     </qresource>
 </RCC>

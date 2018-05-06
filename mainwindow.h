@@ -99,7 +99,10 @@ public:
     int validateSignUpContent();
     int validateCourseContent();
 
-    void addCoursesForTest();
+    void addCourses();
+
+    void init();
+    void reset();
 
     std::unique_ptr<db_tables>& getTable(){return table;}
     void setPerson(std::unique_ptr<IPerson>& per) {m_person = std::move(per);}
@@ -118,6 +121,8 @@ private slots:
     short check_login();
     void on_pb_login_clicked();
 
+    void setTabText(TabsType tab);
+
 
     void on_pb_sign_up_clicked();
 
@@ -128,6 +133,8 @@ private slots:
     void on_pb_save_course_clicked();
 
     void on_pb_enrolled_clicked();
+
+    void logout_trigger(bool);
 
 private:
     Ui::MainWindow *ui;
@@ -142,6 +149,8 @@ private:
     QMap<QString,QString> m_map_users;
     QMap<QString ,QString> m_map_courses;
 
+    QMenu  *m_menu_username;
+    QAction *m_act_logout;
 };
 
 class Task : public QObject

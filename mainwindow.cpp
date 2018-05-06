@@ -7,25 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-    table = std::make_unique<db_tables>();
-    table->connect("db_conn_login");
-
-    thread = new QThread();
-    task = new Task(this);
-    connect( thread, SIGNAL(started()), task, SLOT(fetchUsers()) );
-    connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
-
-
-
-
-    task->moveToThread(thread);
-    thread->start();
+    init();
 
     ui->stackedWidget_login->setCurrentIndex(0);
     ui->stackedWidget_main->setCurrentIndex(0);
 
-
+    ui->pb_completed->hide();
 }
 
 
@@ -87,7 +74,7 @@ int MainWindow::validateCourseContent()
 
 
 
-void MainWindow::addCoursesForTest()
+void MainWindow::addCourses()
 {
 
     short ret =  0;
@@ -107,6 +94,30 @@ void MainWindow::addCoursesForTest()
     ui->tableWidget_Crs_Avail->updateTable(list,avail);
     ui->tableWidget_Crs_Avail->resizeColumnsToContents();
 
+}
+
+void MainWindow::init()
+{
+    table = std::make_unique<db_tables>();
+    table->connect("db_conn_login");
+
+    thread = new QThread();
+    task = new Task(this);
+    connect( thread, SIGNAL(started()), task, SLOT(fetchUsers()) );
+    connect( thread, SIGNAL(started()), task, SLOT(fetchCourses()) );
+
+
+    ui->stackedWidget_login->setCurrentIndex(0);
+    ui->stackedWidget_main->setCurrentIndex(0);
+}
+
+void MainWindow::reset()
+{
+    m_person.reset();
+    m_menu_username->deleteLater();
+    m_act_logout->deleteLater();
+    ui->tableWidget_Crs_Avail->reset();
+    ui->tableWidget_MyCrs->reset();
 }
 
 void MainWindow::setMyCourseTable(const QStringList &list)
@@ -186,6 +197,12 @@ short MainWindow::check_login()
 
 void MainWindow::on_pb_login_clicked()
 {
+//    task->moveToThread(thread);
+//    thread->start();
+
+    task->fetchCourses();
+    task->fetchUsers();
+
     if( check_login() == MW_FAILED) return;
 
     task->fetchRegCourses();
@@ -193,19 +210,47 @@ void MainWindow::on_pb_login_clicked()
 
     if(m_person->getPerson_type() == STUDENT)
     {
-        ui->tabWidget_Courses->setTabEnabled(2,false);
-        ui->tabWidget_Courses->setTabText(2,"");
-        ui->pb_enrolled->show();
+        setTabText(ADD_COURSE);
 
     }
     else if(m_person->getPerson_type() == PROFESSOR)
     {
-        ui->tabWidget_Courses->setTabEnabled(1,false);
-        ui->tabWidget_Courses->setTabText(1,"");
-        ui->pb_enrolled->hide();
+        setTabText(MY_COURSE);
 
     }
-    addCoursesForTest();
+#if LOGIN_TEST
+    m_menu_username = new QMenu(m_person->getName());
+    m_act_logout = new QAction("Logout");
+    m_menu_username->addAction(m_act_logout);
+    connect(m_act_logout,SIGNAL(triggered(bool)),this,SLOT(logout_trigger(bool)));
+    ui->menuBar->addMenu(m_menu_username);
+#endif
+    addCourses();
+
+}
+
+void MainWindow::setTabText(TabsType tab)
+{
+    switch (tab) {
+    case COURSE_AVAILABLE:
+
+        break;
+    case MY_COURSE:
+        ui->tabWidget_Courses->setTabEnabled(MY_COURSE,false);
+        ui->tabWidget_Courses->setTabText(MY_COURSE,"");
+        ui->tabWidget_Courses->setTabText(ADD_COURSE,"Add Course");
+        ui->tabWidget_Courses->setTabEnabled(ADD_COURSE,true);
+        ui->pb_enrolled->hide();
+        break;
+    case ADD_COURSE:
+        ui->tabWidget_Courses->setTabEnabled(ADD_COURSE,false);
+        ui->tabWidget_Courses->setTabText(ADD_COURSE,"");
+        ui->tabWidget_Courses->setTabText(MY_COURSE,"My Courses");
+        ui->tabWidget_Courses->setTabEnabled(MY_COURSE,true);
+        ui->pb_enrolled->show();
+        break;
+
+    }
 
 }
 
@@ -372,7 +417,7 @@ void MainWindow::on_pb_save_course_clicked()
     ret = table->insertCourse(course);
 
     m_map_courses.insert(course_id,course_title);
-    addCoursesForTest();
+    addCourses();
 }
 
 void MainWindow::on_pb_enrolled_clicked()
@@ -383,4 +428,11 @@ void MainWindow::on_pb_enrolled_clicked()
         ret = table->insertRegisterCourse(m_person->getId(),l);
 
     task->fetchRegCourses();
+}
+
+void MainWindow::logout_trigger(bool)
+{
+    ui->stackedWidget_main->setCurrentIndex(0);
+    ui->stackedWidget_login->setCurrentIndex(0);
+    reset();
 }

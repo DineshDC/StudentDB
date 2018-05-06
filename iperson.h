@@ -13,7 +13,11 @@ typedef enum _PersonType {
     PROFESSOR = 1
 }PersonType;
 
-
+typedef enum _Tabs {
+    COURSE_AVAILABLE   = 0,
+    MY_COURSE = 1,
+    ADD_COURSE
+}TabsType;
 
 class IPerson
 {

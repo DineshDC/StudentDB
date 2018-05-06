@@ -25,12 +25,12 @@ void CustomTable::updateTable(QStringList list, const QStringList &availableList
                 QString cellVal = data.at(col);
                 if(!availableList.isEmpty())
                 {
-                   if( availableList.contains(cellVal))
-                   {
-                       lessCnt++;
-                       row--;
-                       break;
-                   }
+                    if( availableList.contains(cellVal))
+                    {
+                        lessCnt++;
+                        row--;
+                        break;
+                    }
                 }
                 QTableWidgetItem *item = new QTableWidgetItem(cellVal);
                 item->setCheckState(Qt::Unchecked);
@@ -46,15 +46,19 @@ void CustomTable::updateTable(QStringList list, const QStringList &availableList
         row++;
 
     }
+#if 1
     if(lessCnt == list.count() )//this check is when all courses are enrolled by student so that course table should not show rows
     {
-        setRowCount(1);
-        setSpan(0,0,1,6);//this will change when column count is increased
-        setItem(0,0,new QTableWidgetItem("No Course Available to enrolled"));
+        setRowCount(0);
+     //   setSpan(0,0,1,6);//this will change when column count is increased
+        //setItem(0,0,new QTableWidgetItem("No Course Available to enrolled"));
     }
     else {
+       // setSpan(0,0,0,0);
         setRowCount(abs(row - lessCnt));
+        setColumnCount(6);
     }
+#endif
 }
 
 QStringList CustomTable::getSelection()
